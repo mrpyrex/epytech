@@ -34,6 +34,10 @@ export_to_csv.short_description = 'Export To CSV'
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ['product']
+    readonly_fields = ['product', 'quantity', 'price']
+    can_delete = False
+    max_num = 0
+    template = 'admin/order/tabular.html'
 
 
 class OrderItemAdmin(admin.ModelAdmin):
@@ -46,6 +50,20 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['created_at', 'updated_at', 'paid']
     inlines = [OrderItemInline]
     actions = [export_to_csv]
+    readonly_fields = ['id', 'phone',
+                       'billing_address1', 'billing_address2', 'city', 'created_at', 'updated_at', 'paid']
+    fieldsets = [
+        ('ORDER INFORMATION', {'fields': [
+         'id', 'ref', 'created_at']}),
+        ('SHIPPING INFORMATION', {'fields': ['phone',
+                                             'billing_address1', 'billing_address2', 'city']})
+    ]
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
 
 
 admin.site.register(OrderItem, OrderItemAdmin)
