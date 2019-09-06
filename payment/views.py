@@ -12,11 +12,15 @@ def payment_process(request):
     paystack_total = int(order.get_total_cost() * 100)
     data_key = settings.PAYSTACK_PUBLIC_KEY
     data_email = request.user.email
-
+    # if request.method == 'POST':
+    #     print(request.POST)
     # products = Product.objects.get(id=order_item.product.id)
     # products.stock = int(order_item.product.stock - order_item.quantity)
     # products.save()
     # order_item.delete()
+    # order.paid = True
+    # return redirect()
+
     context = {
         'order': order,
         'paystack_total': paystack_total,
@@ -24,3 +28,36 @@ def payment_process(request):
         'data_email': data_email
     }
     return render(request, 'payment/process.html', context)
+
+
+def payment_success(request):
+    return render(request, 'payment/success.html')
+
+
+# import hmac
+# import hashlib
+# import json
+# from django.http import HttpResponse
+
+# def processPaystackWebhook(request):
+#     """
+#     The function takes an http request object
+#     containing the json data from paystack webhook client.
+#     Django's http request and response object was used
+#     for this example.
+#     """
+#     paystack_sk = "sk_fromthepaystackguys"
+#     json_body = json.loads(request.body)
+#     computed_hmac = hmac.new(
+#         bytes(paystack_sk, 'utf-8'),
+#     str.encode(request.body.decode('utf-8')),
+#         digestmod=hashlib.sha512
+#         ).hexdigest()
+#     if 'HTTP_X_PAYSTACK_SIGNATURE' in request.META:
+#         if request.META['HTTP_X_PAYSTACK_SIGNATURE'] == computed_hmac:
+#             #IMPORTANT! Handle webhook request asynchronously!!
+#             #
+#             #..code
+#             #
+#             return HttpResponse(status=200)
+#     return HttpResponse(status=400) #non 200

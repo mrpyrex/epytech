@@ -41,6 +41,10 @@ class Product(models.Model):
     name = models.CharField(max_length=250, db_index=True)
     slug = models.SlugField(db_index=True)
     image = models.ImageField(upload_to='products/', blank=True)
+    image_1 = models.ImageField(blank=True, null=True, upload_to='products/')
+    image_2 = models.ImageField(blank=True, null=True, upload_to='products/')
+    image_3 = models.ImageField(blank=True, null=True, upload_to='products/')
+    image_4 = models.ImageField(blank=True, null=True, upload_to='products/')
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(
