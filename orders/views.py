@@ -3,14 +3,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from address.models import Address
+from shop.models import Product
 from cart.views import _cart_id
 from cart.models import CartItem, Cart
 from .models import Order, OrderItem
 
-# Create your views here.
 
-# ADD LOGIN REQUIRED DECORATOR
-@login_required
+# @login_required()
 def order_create(request):
     cart = Cart.objects.get(cart_id=_cart_id(request))
     cart_items = CartItem.objects.filter(cart=cart)
@@ -40,8 +39,19 @@ def order_create(request):
                 order=order
             )
             oi.save()
+
+            # print(order_item)
+
+            # print(oi.product.id)
+            # print(oi.product)
+            # print(oi.quantity)
+            # print(oi.product.stock)
+            products = Product.objects.get(id=order_item.product.id)
+            products.stock = int(
+                order_item.product.stock - order_item.quantity)
+            products.save()
+            order_item.delete()
         request.session['order_id'] = order.id
-        # return redirect(reverse('payment:process'))
     except ObjectDoesNotExist:
         pass
 

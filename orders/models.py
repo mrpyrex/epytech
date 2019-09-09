@@ -1,6 +1,7 @@
 from django.db import models
 from shop.models import Product
 from django.contrib.auth.models import User
+from payment.models import Payment
 
 # Create your models here.
 
@@ -8,6 +9,8 @@ from django.contrib.auth.models import User
 class Order(models.Model):
     customer = models.ForeignKey(
         User, related_name='orders', on_delete=models.CASCADE, null=True)
+    amount = models.ForeignKey(
+        Payment, related_name='Payment', on_delete=models.CASCADE, null=True)
     ref = models.CharField(max_length=250, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

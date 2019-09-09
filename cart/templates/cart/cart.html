@@ -1,71 +1,89 @@
-{% extends 'base.html' %}
-{% load humanize %}
-
-
-{% block content %}
+{% extends 'base.html' %} {% load humanize %} {% block content %}
 
 <div class="container">
-    <div class="table-responsive">
-        <h3>Cart Summary</h3>
-        {% if not cart_items  %}
-        <div class="container">
-            <h2>Your shopping cart is empty</h2>
-            <p>please click <a href="{% url 'shop:shop_home' %}">here</a> to got to shop</p>
-        </div>
-        {% else %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">SKU</th>
-                    <th scope="col">ITEM</th>
-                    <th scope="col">UNIT PRICE</th>
-                    <th scope="col">QTY</th>
-                    <th scope="col">SUBTOTAL</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                {% for cart_item in cart_items %}
-                <tr>
-                    <th scope="row">1</th>
-                    <td>{{ cart_item.product.id }}</td>
-                    <td>{{ cart_item.product.name }}</td>
-                    <td>&#8358;{{ cart_item.product.price|intcomma }}</td>
-                    <td>
-                        {% if cart_item.quantity < cart_item.product.stock %}
-                        <a class="mr-2" href="{% url 'cart:add_cart' cart_item.product.id %}"><i
-                                class="fas fa-plus"></i></a>
-                        {{ cart_item.quantity }}
-                        <a class="ml-2" href="{% url 'cart:cart_remove' cart_item.product.id %}"><i
-                                class="fas fa-minus"></i></a>
-                        <a class="ml-2" href="{% url 'cart:full_remove' cart_item.product.id %}"><i style="color:red"
-                                class="far fa-trash-alt"></i></a>
-
-                        {% else %}
-                        <a href=""><i class="fas fa-minus"></i></a>
-                        <a href=""><i class="far fa-trash-alt"></i></a>
-                        {% endif %}
-                    </td>
-                    <td>&#8358;{{ cart_item.sub_total |intcomma}}</td>
-
-                    {% endfor %}
-                </tr>
-                <tr>
-                    <td colspan="5">Grand Total</td>
-                    <td>&#8358;{{ total|intcomma }}</td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <a class="btn btn-danger float-right" href="{% url 'shop:shop_home' %}">Continue Shopping</a>
-                        <a class="btn btn-primary float-right mr-2" href="{% url 'orders:order_create' %}">Checkout</a>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        {% endif %}
+  <div class="table-responsive">
+    <h3>Cart Summary</h3>
+    {% if not cart_items %}
+    <div class="container">
+      <h2>Your shopping cart is empty</h2>
+      <p>
+        please click <a href="{% url 'shop:shop_home' %}">here</a> to got to
+        shop
+      </p>
     </div>
+    {% else %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">SKU</th>
+          <th scope="col">ITEM</th>
+          <th scope="col">UNIT PRICE</th>
+          <th scope="col">QTY</th>
+          <th scope="col">SUBTOTAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cart_item in cart_items %}
+        <tr>
+          <th scope="row">1</th>
+          <td>{{ cart_item.product.id }}</td>
+          <td>{{ cart_item.product.name }}</td>
+          <td>&#8358;{{ cart_item.product.price | intcomma }}</td>
+          <td>
+            {% if cart_item.quantity < cart_item.product.stock %}
+            <a
+              class="mr-2"
+              href="{% url 'cart:add_cart' cart_item.product.id %}"
+              ><i class="fas fa-plus"></i
+            ></a>
+            {{ cart_item.quantity }}
+            <a
+              class="ml-2"
+              href="{% url 'cart:cart_remove' cart_item.product.id %}"
+              ><i class="fas fa-minus"></i
+            ></a>
+            <a
+              class="ml-2"
+              href="{% url 'cart:full_remove' cart_item.product.id %}"
+              ><i style="color:red" class="far fa-trash-alt"></i
+            ></a>
+
+            {% else %}
+            <a href="{% url 'cart:cart_remove' cart_item.product.id %}"
+              ><i class="fas fa-minus"></i
+            ></a>
+            <a href="{% url 'cart:full_remove' cart_item.product.id %}"
+              ><i class="far fa-trash-alt" style="color:red"></i
+            ></a>
+            {% endif %}
+          </td>
+          <td>&#8358;{{ cart_item.sub_total | intcomma }}</td>
+
+          {% endfor %}
+        </tr>
+        <tr>
+          <td colspan="5">Grand Total</td>
+          <td>&#8358;{{ total | intcomma }}</td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <a
+              class="btn btn-danger float-right"
+              href="{% url 'shop:shop_home' %}"
+              >Continue Shopping</a
+            >
+            <a
+              class="btn btn-primary float-right mr-2"
+              href="{% url 'orders:order_create' %}"
+              >Checkout</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
 </div>
 
 {% endblock %}
