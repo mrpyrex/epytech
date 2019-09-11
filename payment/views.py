@@ -29,11 +29,6 @@ def payment_process(request):
             order.amount = payment
             order.save()
 
-            # products = Product.objects.get(id=order_item.product.id)
-            # products.stock = int(
-            #     order_item.product.stock - order_item.quantity)
-            # products.save()
-            # order_item.delete()
         except ObjectDoesNotExist:
             pass
         return redirect('payment:success')

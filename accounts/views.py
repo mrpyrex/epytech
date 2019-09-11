@@ -17,7 +17,7 @@ def register(request):
             customer_group.user_set.add(register_user)
             messages.success(
                 request, f'Account created for {username}! You can now login.')
-            return redirect('address:address_create_home')
+            return redirect('address:create')
     else:
         form = UserRegisterForm()
     context = {

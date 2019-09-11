@@ -40,12 +40,6 @@ def order_create(request):
             )
             oi.save()
 
-            # print(order_item)
-
-            # print(oi.product.id)
-            # print(oi.product)
-            # print(oi.quantity)
-            # print(oi.product.stock)
             products = Product.objects.get(id=order_item.product.id)
             products.stock = int(
                 order_item.product.stock - order_item.quantity)
@@ -55,4 +49,4 @@ def order_create(request):
     except ObjectDoesNotExist:
         pass
 
-    return render(request, 'orders/create.html', {'cart': cart})
+    return render(request, 'orders/create.html', {'cart': cart, 'order_item': order_item, 'customer': customer})

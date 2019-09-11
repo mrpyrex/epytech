@@ -6,7 +6,7 @@
     <div class="col-md-8">
         <div class="card p-4 mt-4">
             <h1>Order Summary</h1>
-            <p>Show customer name</p>
+            <p>{{ request.user.first_name}} {{request.user.last_name}}</p>
             <p>Show address Details</p>
             <p>Tax and shipping</p>
             <p>Show Total</p>
